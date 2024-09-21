@@ -13,6 +13,11 @@ provider:
 plugins:
   - serverless-offline
 
+custom:
+  serverless-offline:
+    httpPort: 3003
+    lambdaPort: 3002
+
 functions:
   graphql:
     handler: dist/index.graphqlHandler  # Point to compiled JS in dist folder

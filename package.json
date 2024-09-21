@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "sls offline start",
+    "start": "npm run build && sls offline start",
     "build": "tsc",
     "deploy": "sls deploy",
     "clean": "rm -rf dist .serverless"
