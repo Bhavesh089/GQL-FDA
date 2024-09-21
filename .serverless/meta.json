@@ -1,5 +1,5 @@
 {
-  "/Users/bhaveshkamuni/myprojects/fda-project": {
+  "/Users/bhaveshkamuni/myprojects/fda-project/GQL-FDA": {
     "versionSfCore": null,
     "versionFramework": "4.4.0",
     "isWithinCompose": false,
@@ -9,7 +9,7 @@
       "default-aws-credential-resolver": "<REDACTED>"
     },
     "composeServiceName": null,
-    "servicePath": "/Users/bhaveshkamuni/myprojects/fda-project",
+    "servicePath": "/Users/bhaveshkamuni/myprojects/fda-project/GQL-FDA",
     "serviceConfigFileName": "serverless.yml",
     "service": {
       "service": "graphql-fda",
@@ -115,13 +115,18 @@
               "Properties": {
                 "Code": {
                   "S3Bucket": "serverless-framework-deployments-ap-south-1-e02e56ab-ed4f",
-                  "S3Key": "serverless/graphql-fda/dev/1726908557677-2024-09-21T08:49:17.677Z/graphql-fda.zip"
+                  "S3Key": "serverless/graphql-fda/dev/1726936800437-2024-09-21T16:40:00.437Z/graphql-fda.zip"
                 },
-                "Handler": "src/index.graphqlHandler",
+                "Handler": "dist/index.graphqlHandler",
                 "Runtime": "nodejs20.x",
                 "FunctionName": "graphql-fda-dev-graphql",
                 "MemorySize": 128,
                 "Timeout": 10,
+                "Environment": {
+                  "Variables": {
+                    "NODE_OPTIONS": "--enable-source-maps"
+                  }
+                },
                 "Role": {
                   "Fn::GetAtt": [
                     "IamRoleLambdaExecution",
@@ -133,14 +138,14 @@
                 "GraphqlLogGroup"
               ]
             },
-            "GraphqlLambdaVersionANB490Y7FVOvDYisLyvZ7n3uPCJjyHqABC3V7mqU": {
+            "GraphqlLambdaVersion9x4OCxdOkTdPVNiQAt1fKylkCuN26ANpk0ZkhhdnU": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "GraphqlLambdaFunction"
                 },
-                "CodeSha256": "eLciUaHf0NDcF48oE4F7yxHkV7xh7br/Pg2io69uPZo="
+                "CodeSha256": "ATOSul68XDM9PTmIjvFO4CWxOBJldfKzGkFSD31E/EI="
               }
             },
             "ApiGatewayRestApi": {
@@ -261,7 +266,7 @@
                 "GraphqlLambdaPermissionApiGateway"
               ]
             },
-            "ApiGatewayDeployment1726908548258": {
+            "ApiGatewayDeployment1726936797922": {
               "Type": "AWS::ApiGateway::Deployment",
               "Properties": {
                 "RestApiId": {
@@ -322,7 +327,7 @@
             "GraphqlLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "GraphqlLambdaVersionANB490Y7FVOvDYisLyvZ7n3uPCJjyHqABC3V7mqU"
+                "Ref": "GraphqlLambdaVersion9x4OCxdOkTdPVNiQAt1fKylkCuN26ANpk0ZkhhdnU"
               },
               "Export": {
                 "Name": "sls-graphql-fda-dev-GraphqlLambdaFunctionQualifiedArn"
@@ -358,9 +363,18 @@
         },
         "vpc": {}
       },
+      "plugins": [
+        "serverless-offline"
+      ],
+      "custom": {
+        "webpack": {
+          "webpackConfig": "./webpack.config.js",
+          "includeModules": true
+        }
+      },
       "functions": {
         "graphql": {
-          "handler": "src/index.graphqlHandler",
+          "handler": "dist/index.graphqlHandler",
           "events": [
             {
               "http": {
@@ -388,26 +402,27 @@
             }
           ],
           "name": "graphql-fda-dev-graphql",
+          "environment": {
+            "NODE_OPTIONS": "--enable-source-maps"
+          },
           "package": {},
           "memory": 128,
           "timeout": 10,
           "runtime": "nodejs20.x",
           "vpc": {},
-          "versionLogicalId": "GraphqlLambdaVersionANB490Y7FVOvDYisLyvZ7n3uPCJjyHqABC3V7mqU"
+          "versionLogicalId": "GraphqlLambdaVersion9x4OCxdOkTdPVNiQAt1fKylkCuN26ANpk0ZkhhdnU"
         }
       },
-      "plugins": [
-        "serverless-offline"
-      ],
-      "custom": {
-        "serverless-offline": {
-          "httpPort": 4000,
-          "lambdaPort": 3002,
-          "noPrependStageInUrl": true
+      "build": {
+        "esbuild": {
+          "bundle": true,
+          "target": "node20",
+          "platform": "node",
+          "sourcemap": true
         }
       }
     },
-    "serviceRawFile": "service: graphql-fda\n\nframeworkVersion: '4'\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  region: ap-south-1\n  memorySize: 128\n  timeout: 10\n\nfunctions:\n  graphql:\n    handler: src/index.graphqlHandler\n    events:\n      - http:\n          path: graphql\n          method: post\n          cors: true\n\nplugins:\n  - serverless-offline\n\ncustom:\n  serverless-offline:\n    httpPort: 4000\n    lambdaPort: 3002\n    noPrependStageInUrl: true\n",
+    "serviceRawFile": "service: graphql-fda\n\nframeworkVersion: '4'\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  region: ap-south-1\n  memorySize: 128\n  timeout: 10\n\n\nplugins:\n  - serverless-offline\n\ncustom:\n  webpack:\n    webpackConfig: './webpack.config.js'\n    includeModules: true\n\nfunctions:\n  graphql:\n    handler: dist/index.graphqlHandler  # Point to compiled JS in dist folder\n    events:\n      - http:\n          path: graphql\n          method: post\n          cors: true\nbuild:\n  esbuild:\n    bundle: true\n    target: node20\n    platform: node\n    sourcemap: true",
     "command": [
       "deploy"
     ],
@@ -416,7 +431,7 @@
     },
     "error": null,
     "params": {},
-    "machineId": "f935d90ed1efe724e31fb83513af6e0c",
+    "machineId": "cb566c4d9b32efc14cdc3e8074641d50",
     "stage": "dev",
     "accessKeyV2": "<REDACTED>",
     "accessKeyV1": "<REDACTED>",
@@ -445,12 +460,12 @@
     "serviceUniqueId": "arn:aws:cloudformation:ap-south-1:879381261589:stack/graphql-fda-dev/7bff28e0-77f4-11ef-9ce6-061077d5382d",
     "serviceProviderAwsCfStackId": "arn:aws:cloudformation:ap-south-1:879381261589:stack/graphql-fda-dev/7bff28e0-77f4-11ef-9ce6-061077d5382d",
     "serviceProviderAwsCfStackCreated": "2024-09-21T08:35:41.439Z",
-    "serviceProviderAwsCfStackUpdated": "2024-09-21T08:49:26.785Z",
+    "serviceProviderAwsCfStackUpdated": "2024-09-21T16:40:03.912Z",
     "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {
         "OutputKey": "GraphqlLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:ap-south-1:879381261589:function:graphql-fda-dev-graphql:1",
+        "OutputValue": "arn:aws:lambda:ap-south-1:879381261589:function:graphql-fda-dev-graphql:2",
         "Description": "Current Lambda function version",
         "ExportName": "sls-graphql-fda-dev-GraphqlLambdaFunctionQualifiedArn"
       },

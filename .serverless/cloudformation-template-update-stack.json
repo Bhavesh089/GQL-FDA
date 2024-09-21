@@ -91,13 +91,18 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-ap-south-1-e02e56ab-ed4f",
-          "S3Key": "serverless/graphql-fda/dev/1726908557677-2024-09-21T08:49:17.677Z/graphql-fda.zip"
+          "S3Key": "serverless/graphql-fda/dev/1726936800437-2024-09-21T16:40:00.437Z/graphql-fda.zip"
         },
-        "Handler": "src/index.graphqlHandler",
+        "Handler": "dist/index.graphqlHandler",
         "Runtime": "nodejs20.x",
         "FunctionName": "graphql-fda-dev-graphql",
         "MemorySize": 128,
         "Timeout": 10,
+        "Environment": {
+          "Variables": {
+            "NODE_OPTIONS": "--enable-source-maps"
+          }
+        },
         "Role": {
           "Fn::GetAtt": [
             "IamRoleLambdaExecution",
@@ -109,14 +114,14 @@
         "GraphqlLogGroup"
       ]
     },
-    "GraphqlLambdaVersionANB490Y7FVOvDYisLyvZ7n3uPCJjyHqABC3V7mqU": {
+    "GraphqlLambdaVersion9x4OCxdOkTdPVNiQAt1fKylkCuN26ANpk0ZkhhdnU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GraphqlLambdaFunction"
         },
-        "CodeSha256": "eLciUaHf0NDcF48oE4F7yxHkV7xh7br/Pg2io69uPZo="
+        "CodeSha256": "ATOSul68XDM9PTmIjvFO4CWxOBJldfKzGkFSD31E/EI="
       }
     },
     "ApiGatewayRestApi": {
@@ -237,7 +242,7 @@
         "GraphqlLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1726908548258": {
+    "ApiGatewayDeployment1726936797922": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -298,7 +303,7 @@
     "GraphqlLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GraphqlLambdaVersionANB490Y7FVOvDYisLyvZ7n3uPCJjyHqABC3V7mqU"
+        "Ref": "GraphqlLambdaVersion9x4OCxdOkTdPVNiQAt1fKylkCuN26ANpk0ZkhhdnU"
       },
       "Export": {
         "Name": "sls-graphql-fda-dev-GraphqlLambdaFunctionQualifiedArn"
