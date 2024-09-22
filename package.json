@@ -1,26 +1,17 @@
 {
-  "name": "fda-project",
+  "name": "gql-fda",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "npm run build && sls offline start",
-    "build": "tsc",
-    "deploy": "sls deploy",
-    "clean": "rm -rf dist .serverless"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
     "apollo-server-lambda": "^3.13.0",
-    "graphql": "^16.9.0"
-  },
-  "devDependencies": {
-    "@types/aws-lambda": "^8.10.145",
-    "@types/node": "^22.5.5",
-    "esbuild": "^0.23.1",
-    "serverless-offline": "^13.8.0",
-    "ts-loader": "^9.5.1",
-    "typescript": "^5.6.2"
+    "graphql": "^16.9.0",
+    "serverless-offline": "^13.8.0"
   }
 }
