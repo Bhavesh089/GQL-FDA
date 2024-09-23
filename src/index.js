@@ -7,5 +7,4 @@ const server = new ApolloServer({
   typeDefs: [userTypeDef],
   resolvers: [userResolver],
 });
-
 exports.graphqlHandler = server.createHandler();
