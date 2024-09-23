@@ -1,0 +1,9 @@
+{
+    "watch": ["src"],
+    "ext": "js,json,graphql",
+    "exec": "sls offline start"
+  }
+  
+  
+  
+  

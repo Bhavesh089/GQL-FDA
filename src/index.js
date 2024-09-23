@@ -1,10 +1,11 @@
+require('dotenv').config();
 const { ApolloServer } = require('apollo-server-lambda');
-const helloTypeDef = require('./graphql/typedefs/helloTypeDef');
-const helloResolver = require('./graphql/resolvers/helloResolver');
+const userTypeDef = require('./graphql/typedefs/userTypeDef');
+const userResolver = require('./graphql/resolvers/userResolver');
 
 const server = new ApolloServer({
-  typeDefs: [helloTypeDef],
-  resolvers: [helloResolver],
+  typeDefs: [userTypeDef],
+  resolvers: [userResolver],
 });
 
 exports.graphqlHandler = server.createHandler();

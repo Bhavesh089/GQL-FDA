@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "dev": "nodemon"
+
+
   },
   "keywords": [],
   "author": "",
@@ -11,7 +14,11 @@
   "description": "",
   "dependencies": {
     "apollo-server-lambda": "^3.13.0",
+    "dotenv": "^16.4.5",
     "graphql": "^16.9.0",
     "serverless-offline": "^13.8.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
   }
 }
