@@ -8,7 +8,7 @@ const lambda = new AWS.Lambda({
 });
 
 const settings = {
-  isPrivate: false
+  isPrivate: true
 }
 
 const userLogin = async(_, {email, role, mobileNumber}) => {
