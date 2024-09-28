@@ -1,0 +1,18 @@
+type Query {
+  get_user: String
+  # user_login: String
+}
+
+type Mutation {
+  user_login(
+    email: String
+    role: Roles
+    mobileNumber: String
+  ): String
+}
+
+enum Roles {
+  CUSTOMER
+  VENDOR
+  ADMIN
+}

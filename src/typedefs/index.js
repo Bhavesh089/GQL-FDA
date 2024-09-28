@@ -1,7 +1,9 @@
-const UsertypeDef = require("./userTypeDef");
 
+const readTypeDefs = require('../../lib/read-type-defs')
+const userTypeDefs = readTypeDefs(`${__dirname}/user`)
 const base = `
   type Query
+  type Mutation
 `
 
-module.exports = [base, UsertypeDef]
+module.exports = [base, userTypeDefs]

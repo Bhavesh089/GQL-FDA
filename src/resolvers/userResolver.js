@@ -8,20 +8,19 @@ const lambda = new AWS.Lambda({
 });
 
 const settings = {
-  isPrivate: true
+  isPrivate: false
 }
 
-const userLogin = async() => {
+const userLogin = async(_, {email, role, mobileNumber}) => {
+  // console.log(args, 'this is args-->')
   const params = {
             FunctionName: process.env.AUTH_LAMBDA_NAME,
             InvocationType: 'RequestResponse',
             Payload: JSON.stringify(
               {
-                // "user": "bhavesh",
-                // "name": "bhavesh raise",
-                "email": "alice@example.com",
-                "mobileNumber": "1234567890",
-                "role": "CUSTOMER",
+                "email": email,
+                "mobileNumber": mobileNumber,
+                "role": role,
               }
             ), // Match the payload you're sending
         };
@@ -78,57 +77,12 @@ const getUser = async() => {
 
 module.exports = {
   Query: {
-    user_login: resolve(
-      userLogin,
-    ),
     get_user: resolve(getUser, settings)
+  },
+
+  Mutation: {
+    user_login: resolve(
+      userLogin
+    ),
   }
 }
-
-// const AWS = require('aws-sdk');
-// const { handleLambdaResponse } = require('../../lib/lambdaResponseHandler');
-//  // Adjust path as necessary
-
-// AWS.config.update({ logger: console });
-
-// const lambda = new AWS.Lambda({
-//   endpoint: process.env.IS_OFFLINE && process.env.LAMBDA_ENDPOINT, // Your Lambda function's local endpoint
-//   region: process.env.REGION // Make sure this matches your setup
-// });
-
-// const authResolver = {
-//   Query: {
-//     auth:  async (_, id, context) => {
-
-//     // const user = await verifyToken(context.args)
-//       const params = {
-//         FunctionName: process.env.AUTH_LAMBDA_NAME,
-//         InvocationType: 'RequestResponse',
-//         Payload: JSON.stringify(
-//           {
-//             // "user": "bhavesh",
-//             // "name": "bhavesh raise",
-//             "email": "alice@example.com",
-//             "mobileNumber": "1234567890",
-//             "role": "CUSTOMER",
-//           }
-//         ), // Match the payload you're sending
-//     };
-
- 
-//       try {
-//         const result = await lambda.invoke(params).promise();
-      
-//         console.log(result, 'this is result')
-//         const response = await handleLambdaResponse(result); // Call the utility function to handle the response
-//         console.log(response, 'Lambda Result');
-//         return JSON.stringify(response); // Return the structured response
-//       } catch (error) {
-//         console.error('Error invoking Lambda:', error);
-//         throw new Error('Could not fetch user data');
-//       }
-//     },
-//   },
-// };
-
-// module.exports = authResolver;
