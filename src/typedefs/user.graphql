@@ -5,12 +5,31 @@ type Query {
 
 type Mutation {
   user_login(
-    email: String
-    role: Roles
-    mobileNumber: String
-  ): String
+    login_id: String
+    otp: String
+  ): loginResponse
+
+  create_user: String
 }
 
+type loginResponse {
+  statusCode: String
+  message: String
+  token: String
+  user: UserResponse
+}
+
+type UserResponse{
+  id: String
+  email: String
+  address: String
+  name: String
+  account_status: String
+  role: String
+  favorites: [String]
+  phone: String
+  order_history: [String]
+}
 enum Roles {
   CUSTOMER
   VENDOR
