@@ -1,0 +1,39 @@
+type Query {
+  get_restaurants: GetRestaurantsResponse
+  get_restaurant(
+    id: String
+  ): GetRestaurantResponse
+}
+
+type Mutation {
+  create_restaurants: String
+}
+
+type GetRestaurantResponse{
+  statusCode: String
+  message: String
+  restaurant: RestaurantValues
+}
+
+type GetRestaurantsResponse{
+  statusCode: String
+  message: String
+  restaurants: [RestaurantValues]
+}
+
+type RestaurantValues{
+   menu: [
+      String
+    ],
+    user_id: String,
+    commission_rate: Int,
+    rating: Int,
+    total_earnings: Int,
+    operating_hours: String,
+    contact_details: String,
+    cuisine_type: String,
+    address: String,
+    description: String,
+    id: String,
+    name: String
+}

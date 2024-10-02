@@ -1,8 +1,9 @@
 const { merge } = require('lodash')
 const userResolver = require('./userResolver');
+const restaurantResolver = require('./restaurantResolver');
 
 
-module.exports = merge(userResolver)
+module.exports = merge(userResolver, restaurantResolver)
 
 
 

@@ -1,14 +1,13 @@
 type Query {
   get_user: String
-  # user_login: String
-}
-
-type Mutation {
   user_login(
     login_id: String
     otp: String
   ): loginResponse
 
+}
+
+type Mutation {
   create_user: String
 }
 

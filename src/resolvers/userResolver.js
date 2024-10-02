@@ -1,32 +1,15 @@
 require('dotenv').config();
-const AWS = require('aws-sdk');
+const invokeLambda = require('../../lib/lambdaInvoke');
 const { handleLambdaResponse } = require('../../lib/lambdaResponseHandler');
 const resolve = require('../../lib/resolve');
-const lambda = new AWS.Lambda({
-  endpoint: process.env.IS_OFFLINE && process.env.LAMBDA_ENDPOINT, // Your Lambda function's local endpoint
-  region: process.env.REGION // Make sure this matches your setup
-});
-
 const settings = {
   isPrivate: true
 }
 
 const userLogin = async(_, {login_id, otp}) => {
-  const params = {
-            FunctionName: process.env.VERIFY_OTP_LAMBDA_NAME,
-            InvocationType: 'RequestResponse',
-            Payload: JSON.stringify(
-              {
-                login_id,
-                otp
-              }
-            ), // Match the payload you're sending
-        };
-
-        console.log(params, '-->')
-
+      const payload = { login_id, otp };
       try {
-        const result = await lambda.invoke(params).promise();
+        const result = await invokeLambda(process.env.VERIFY_OTP_LAMBDA_NAME, payload)
         console.log(result, 'this is result')
         const {statusCode, message, data}  = await handleLambdaResponse(result); // Call the utility function to handle the response
         console.log(data, 'Lambda Result');
@@ -41,11 +24,7 @@ const userLogin = async(_, {login_id, otp}) => {
 
 const createUser = async(_, {user}) => {
   // console.log(args, 'this is args-->')
-  const params = {
-            FunctionName: process.env.CREATE_USER_LAMBDA_NAME,
-            InvocationType: 'RequestResponse',
-            Payload: JSON.stringify(
-              [
+  const payload = [
                 {
                   name: "John Doe",
                   email: "john.doe@example.com",
@@ -119,14 +98,10 @@ const createUser = async(_, {user}) => {
                   favorites: ["menuItem7", "menuItem8"]
                 }
               ]  
-            ), // Match the payload you're sending
-        };
-
-        console.log(params, '-->')
+        // console.log(params, '-->')
 
       try {
-        const result = await lambda.invoke(params).promise();
-      
+        result = await invokeLambda(process.env.CREATE_USER_LAMBDA_NAME, payload)
         console.log(result, 'this is result')
         const {statusCode, message, data} = await handleLambdaResponse(result); // Call the utility function to handle the response
         console.log( data, 'Lambda Result');
@@ -140,11 +115,8 @@ const createUser = async(_, {user}) => {
 
 
 const getUser = async() => {
-  const params = {
-    FunctionName: process.env.USERS_LAMBDA_NAME,
-    InvocationType: 'RequestResponse',
-    Payload: JSON.stringify(
-      {
+
+      const payload = {
         "user": "user#c7905301-76fe-4419-946c-9bcfa5200900",
         "Name": "bhavesh hi",
         "Email": "alice@example.com",
@@ -159,11 +131,7 @@ const getUser = async() => {
         // "Account_status": 'inACTIVE',
         "password": "hashedPassword1"
       }
-    ), // Match the payload you're sending
-};
-
-
-        const result = await lambda.invoke(params).promise();
+        const result = await invokeLambda(process.env.USERS_LAMBDA_NAME, payload)
       
         console.log(result, 'this is result')
         const response = await handleLambdaResponse(result); // Call the utility function to handle the response
@@ -175,13 +143,13 @@ const getUser = async() => {
 
 module.exports = {
   Query: {
-    get_user: resolve(getUser, settings)
+    get_user: resolve(getUser, settings),
+    user_login: resolve(
+      userLogin
+    )
   },
 
   Mutation: {
-    user_login: resolve(
-      userLogin
-    ),
     create_user: resolve(createUser)
   }
 }
