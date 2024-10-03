@@ -1,0 +1,9 @@
+iamRoleStatements:
+  # Allow Lambda Access
+  - Effect: Allow
+    Action:
+      - lambda:InvokeFunction
+      - lambda:InvokeAsync
+      - s3:*
+    Resource:
+      - "*"
