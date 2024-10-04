@@ -1,0 +1,38 @@
+type Query {
+  get_categories: GetCategoriesResponse
+}
+
+type Mutation {
+  create_categories(categories: [CategoryInput]): GetCategoriesResponse
+  update_category(category: UpdateCategoryInput ): GetCategoryResponse
+
+}
+
+type GetCategoryResponse{
+  statusCode: String
+  message: String
+  category: CategoryValues
+}
+
+type GetCategoriesResponse{
+  statusCode: String
+  message: String
+  categories: [CategoryValues]
+}
+
+type CategoryValues{
+   id: String
+   name: String
+   image_url: String
+}
+
+input UpdateCategoryInput{
+id: String!
+name: String
+image_url: String 
+}
+
+input CategoryInput{
+  name: String!
+  image_url: String
+}

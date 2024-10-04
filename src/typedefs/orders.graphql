@@ -1,0 +1,90 @@
+type Query {
+  get_orders_by_ids(ids: [String!]): GetOrdersResponse
+  get_order_by_id(
+    id: String
+  ): GetOrderResponse
+  get_orders_by_user_id(user_id: String!): GetOrdersResponse
+  get_orders_by_restaurant_id(restaurant_id: String!): GetOrdersResponse
+  get_orders_by_restaurant_ids(ids: [String!]): GetOrdersResponse
+  get_orders: GetOrdersResponse
+}
+
+type Mutation {
+  create_order(order: [OrderInput]): GetOrdersResponse
+  update_order(order: UpdateOrderInput ): GetOrderResponse
+}
+
+
+type GetOrdersResponse{
+  statusCode: String
+  message: String
+  orders: [OrderValues]
+}
+
+type GetOrderResponse{
+  statusCode: String
+  message: String
+  order: OrderValues
+}
+
+
+type OrderValues{
+  id: String
+  user_id: String
+  restaurant_id: String
+  order_items: [MenuOrderItem]
+  delivery_address: String
+  total_amount: Float
+  vendor_earnings: Float
+  admin_commission: Float
+  order_status: OrderStatus # Valid options will depend on ORDER_STATUSES array
+  order_placed_at: String # Can be represented as ISO date string
+  order_completed_at: String
+}
+
+type MenuOrderItem{
+    name: String
+    price: Float
+    quantity: Int
+    id: String
+}
+
+input InputMenuOrderItem{
+    name: String
+    price: Float
+    quantity: Int
+    id: String
+}
+
+enum OrderStatus{
+    PENDING
+    ONGOING
+    COMPLETED
+}
+input UpdateOrderInput{
+    id: String!
+  restaurant_id: String
+  order_items: [InputMenuOrderItem]
+  delivery_address: String
+  total_amount: Float
+  vendor_earnings: Float
+  admin_commission: Float
+  order_status: OrderStatus # Valid options will depend on ORDER_STATUSES array
+  order_placed_at: String # Can be represented as ISO date string
+  order_completed_at: String
+  type:String
+}
+
+input OrderInput{
+  user_id: String!
+  restaurant_id: String!
+  order_items: [InputMenuOrderItem]
+  delivery_address: String
+  total_amount: Float
+  vendor_earnings: Float
+  admin_commission: Float
+  order_status: OrderStatus # Valid options will depend on ORDER_STATUSES array
+  order_placed_at: String # Can be represented as ISO date string
+  order_completed_at: String
+  type:String
+}

@@ -1,5 +1,6 @@
 type Query {
-  get_user: String
+  get_user(id: String): GetUserResponse
+  get_users:GetUsersResponse
   user_login(
     login_id: String
     otp: String
@@ -9,6 +10,19 @@ type Query {
 
 type Mutation {
   create_user: String
+  update_user(user: UserInput ): GetUserResponse
+}
+
+type GetUserResponse{
+  statusCode: String
+  message: String
+  user: UserResponse
+}
+
+type GetUsersResponse{
+  statusCode: String
+  message: String
+  users: [UserResponse]
 }
 
 type loginResponse {
@@ -29,8 +43,29 @@ type UserResponse{
   phone: String
   order_history: [String]
 }
+
+input UserInput{
+  id:String!
+  name: String,
+  email: String,
+  phone: String,
+  password: String,
+  otp: String,
+  role: Roles,
+  total_earnings: String,
+  account_status: AccountStatus,
+  createdAt: String,
+  address: String,
+  registered_restaurants:[String],
+}
+
 enum Roles {
   CUSTOMER
   VENDOR
   ADMIN
+}
+
+enum AccountStatus {
+  ACTIVE
+  INACTIVE
 }

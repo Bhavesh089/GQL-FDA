@@ -13,7 +13,26 @@ const userLogin = async(_, {login_id, otp}) => {
         console.log(result, 'this is result')
         const {statusCode, message, data}  = await handleLambdaResponse(result); // Call the utility function to handle the response
         console.log(data, 'Lambda Result');
-        return {statusCode, message, token: data.token, user: data.user}; // Return the structured response
+        return {statusCode, message, token: data.token, user: data}; // Return the structured response
+      } catch (error) {
+        console.error('Error invoking Lambda:', error);
+        throw new Error(error);
+      }
+    
+}
+
+
+const updateUser = async(_, {user}) => {
+  // console.log(args, 'this is args-->')
+  const payload = user  
+        console.log(payload, '-->')
+
+      try {
+        result = await invokeLambda(process.env.UPDATE_USER_LAMBDA_NAME, payload)
+        console.log(result, 'this is result')
+        const {statusCode, message, data} = await handleLambdaResponse(result); // Call the utility function to handle the response
+        console.log( data, 'Lambda Result');
+        return {statusCode, message, user: data.user} // Return the structured response
       } catch (error) {
         console.error('Error invoking Lambda:', error);
         throw new Error(error);
@@ -114,42 +133,53 @@ const createUser = async(_, {user}) => {
 }
 
 
-const getUser = async() => {
-
-      const payload = {
-        "user": "user#c7905301-76fe-4419-946c-9bcfa5200900",
-        "Name": "bhavesh hi",
-        "Email": "alice@example.com",
-        "Phone": "1234567890",
-        "Role": "Customer",
-        "TotalEarnings": 23,
-        "RegisteredRestaurants": [],
-        "OrderHistory": [],
-        "Favorites": [],
-        "CreatedAt": "2024-09-26T12:00:00Z",
-        "Address": "123 Main St",
-        // "Account_status": 'inACTIVE',
-        "password": "hashedPassword1"
-      }
-        const result = await invokeLambda(process.env.USERS_LAMBDA_NAME, payload)
+const getUser = async(_,{id}) => {
+      
+      const payload = {id}
+      // const payload = {
+      //   "user": "user#c7905301-76fe-4419-946c-9bcfa5200900",
+      //   "Name": "bhavesh hi",
+      //   "Email": "alice@example.com",
+      //   "Phone": "1234567890",
+      //   "Role": "Customer",
+      //   "TotalEarnings": 23,
+      //   "RegisteredRestaurants": [],
+      //   "OrderHistory": [],
+      //   "Favorites": [],
+      //   "CreatedAt": "2024-09-26T12:00:00Z",
+      //   "Address": "123 Main St",
+      //   // "Account_status": 'inACTIVE',
+      //   "password": "hashedPassword1"
+      // }
+        const result = await invokeLambda(process.env.GET_USER_LAMBDA_NAME, payload)
       
         console.log(result, 'this is result')
-        const response = await handleLambdaResponse(result); // Call the utility function to handle the response
-        console.log(response, 'Lambda Result');
-        return JSON.stringify(response); // Return the structured response
+       const {statusCode, message, data} = await handleLambdaResponse(result); // Call the utility function to handle the response
+        console.log( data, 'Lambda Result');
+        return {statusCode, message, token: data.token, user: data} // Return the structured response
 
+}
+
+const getUsers = async() => {
+  const result = await invokeLambda(process.env.GET_USERS_LAMBDA_NAME, {})
+  console.log(result, 'this is result')
+  const {data, message, statusCode} = await handleLambdaResponse(result); // Call the utility function to handle the response
+  console.log(data, message, statusCode, 'Lambda Result');
+  return {message, statusCode, users: data.users}; // Return the structured response
 }
 
 
 module.exports = {
   Query: {
-    get_user: resolve(getUser, settings),
+    get_user: resolve(getUser),
+    get_users: resolve(getUsers),
     user_login: resolve(
       userLogin
     )
   },
 
   Mutation: {
-    create_user: resolve(createUser)
+    create_user: resolve(createUser),
+    update_user: resolve(updateUser)
   }
 }

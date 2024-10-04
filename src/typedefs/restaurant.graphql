@@ -3,10 +3,14 @@ type Query {
   get_restaurant(
     id: String
   ): GetRestaurantResponse
+  get_restaurant_by_user_id(user_id: String!): GetRestaurantsResponse
+  get_restaurant_by_ids(ids: [String!]): GetRestaurantsResponse
 }
 
 type Mutation {
-  create_restaurants: String
+  create_restaurants(restaurants: [RestaurantInput]): GetRestaurantsResponse
+  update_restaurant(restaurant: RestaurantUpdateInput ): GetRestaurantResponse
+
 }
 
 type GetRestaurantResponse{
@@ -26,7 +30,7 @@ type RestaurantValues{
       String
     ],
     user_id: String,
-    commission_rate: Int,
+    commission_rate: Float,
     rating: Int,
     total_earnings: Int,
     operating_hours: String,
@@ -36,4 +40,33 @@ type RestaurantValues{
     description: String,
     id: String,
     name: String
+}
+
+input RestaurantUpdateInput{
+    id: String!
+  user_id: String
+  name: String
+  description: String
+  address: String
+  rating: Float
+  menu: [String]
+  cuisine_type: String
+  operating_hours: String
+  contact_details: String
+  commission_rate: Float
+  total_earnings: Float
+}
+
+input RestaurantInput{
+  user_id: String!
+  name: String
+  description: String
+  address: String
+  rating: Float
+  menu: [String]
+  cuisine_type: String
+  operating_hours: String
+  contact_details: String
+  commission_rate: Float
+  total_earnings: Float
 }
