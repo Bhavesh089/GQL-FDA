@@ -1,6 +1,9 @@
 const invokeLambda = require("../../lib/lambdaInvoke");
 const { handleLambdaResponse } = require("../../lib/lambdaResponseHandler");
 const resolve = require("../../lib/resolve");
+const settings = {
+    isPrivate: true
+  }
 
 const getMenuItems = async() => {
     const result = await invokeLambda(process.env.GET_MENU_ITEMS_LAMBDA_NAME, {})
@@ -74,13 +77,13 @@ const createMenuItems = async(_, {menu_items}) => {
 module.exports = {
     Query: {
         get_menu_items: resolve(getMenuItems),
-        get_menu_items_by_restaurant_id: resolve(getMenuItemsByRestaurantId),
-        get_menu_items_by_category_id: resolve(getMenuItemsByCatId),
-        get_menu_item: resolve(getMenuItemsById)
+        get_menu_items_by_restaurant_id: resolve(getMenuItemsByRestaurantId, settings),
+        get_menu_items_by_category_id: resolve(getMenuItemsByCatId, settings),
+        get_menu_item: resolve(getMenuItemsById, settings)
       },
     Mutation: {
-      create_menu_items: resolve(createMenuItems),
-      update_menu_item: resolve(updateMenuItem),
+      create_menu_items: resolve(createMenuItems, settings),
+      update_menu_item: resolve(updateMenuItem, settings),
     
     }
   }

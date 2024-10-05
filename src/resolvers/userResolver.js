@@ -171,15 +171,15 @@ const getUsers = async() => {
 
 module.exports = {
   Query: {
-    get_user: resolve(getUser),
-    get_users: resolve(getUsers),
+    get_user: resolve(getUser, settings),
+    get_users: resolve(getUsers, settings),
     user_login: resolve(
       userLogin
     )
   },
 
   Mutation: {
-    create_user: resolve(createUser),
-    update_user: resolve(updateUser)
+    create_user: resolve(createUser, settings),
+    update_user: resolve(updateUser, settings)
   }
 }

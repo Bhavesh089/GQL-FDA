@@ -2,6 +2,10 @@ const invokeLambda = require("../../lib/lambdaInvoke");
 const { handleLambdaResponse } = require("../../lib/lambdaResponseHandler");
 const resolve = require("../../lib/resolve");
 
+const settings = {
+    isPrivate: true
+  }
+
 const create = async(_, {restaurants}) => {
     // console.log(args, 'this is args-->')
     let payload = restaurants
@@ -175,18 +179,18 @@ const getRestaurantsByIds = async(_,{ids}) => {
     Query: {
         get_restaurants: resolve(getRestaurants),
         get_restaurant: resolve(
-            getRestaurant
+            getRestaurant, settings
         ),
         get_restaurant_by_user_id: resolve(
-            getRestaurantsByUserId
+            getRestaurantsByUserId, settings
         ),
         get_restaurant_by_ids: resolve(
-            getRestaurantsByIds
+            getRestaurantsByIds, settings
         )
       },
     Mutation: {
-      create_restaurants: resolve(create),
-      update_restaurant: resolve(update)
+      create_restaurants: resolve(create, settings),
+      update_restaurant: resolve(update, settings)
     }
   }
   

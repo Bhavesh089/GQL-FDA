@@ -2,6 +2,12 @@ const invokeLambda = require("../../lib/lambdaInvoke");
 const { handleLambdaResponse } = require("../../lib/lambdaResponseHandler");
 const resolve = require("../../lib/resolve");
 
+
+const settings = {
+    isPrivate: true
+  }
+
+
 const getOrders = async() => {
     const result = await invokeLambda(process.env.GET_ORDERS_LAMBDA_NAME, {})
     console.log(result, 'this is result')
@@ -92,16 +98,16 @@ const createOrder = async(_, {order}) => {
 
 module.exports = {
     Query: {
-        get_orders_by_ids: resolve(getOrdersByIds),
-        get_order_by_id: resolve(getOrderById),
-        get_orders_by_user_id: resolve(getOrderByUserId),
-        get_orders_by_restaurant_id: resolve(getOrdersByRestaurantId),
-        get_orders_by_restaurant_ids: resolve(getOrdersByRestaurantIds),
-        get_orders: resolve(getOrders)
+        get_orders_by_ids: resolve(getOrdersByIds, settings),
+        get_order_by_id: resolve(getOrderById, settings),
+        get_orders_by_user_id: resolve(getOrderByUserId, settings),
+        get_orders_by_restaurant_id: resolve(getOrdersByRestaurantId, settings),
+        get_orders_by_restaurant_ids: resolve(getOrdersByRestaurantIds, settings),
+        get_orders: resolve(getOrders, settings)
       },
     Mutation: {
-      create_order: resolve(createOrder),
-      update_order: resolve(updateOrder),
+      create_order: resolve(createOrder, settings),
+      update_order: resolve(updateOrder, settings),
     
     }
   }
