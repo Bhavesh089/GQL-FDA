@@ -33,9 +33,11 @@ type MenuItemValues{
   description: String
   price: Float
   category: String
+  category_id: String
   is_available: Boolean
   image_url: String
   rating: Float
+  quantity: Int
 }
 
 input MenuItemsInput{
@@ -45,9 +47,11 @@ input MenuItemsInput{
   description: String
   price: Float
   category: String
+  category_id: String
   is_available: Boolean
   image_url: String
   rating: Float
+  quantity: Int
 }
 
 input MenuItemsUpdateInput{
@@ -58,7 +62,9 @@ input MenuItemsUpdateInput{
   description: String
   price: Float
   category: String
+  category_id: String
   is_available: Boolean
   image_url: String
   rating: Float
+  quantity: Int
 }
