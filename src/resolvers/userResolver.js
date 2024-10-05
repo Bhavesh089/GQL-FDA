@@ -13,7 +13,7 @@ const userLogin = async(_, {login_id, otp}) => {
         console.log(result, 'this is result')
         const {statusCode, message, data}  = await handleLambdaResponse(result); // Call the utility function to handle the response
         console.log(data, 'Lambda Result');
-        return {statusCode, message, token: data.token, user: data}; // Return the structured response
+        return {statusCode, message, token: data.token, user: data.user}; // Return the structured response
       } catch (error) {
         console.error('Error invoking Lambda:', error);
         throw new Error(error);
