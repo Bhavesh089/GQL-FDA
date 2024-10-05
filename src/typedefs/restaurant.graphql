@@ -31,7 +31,7 @@ type RestaurantValues{
     ],
     user_id: String,
     commission_rate: Float,
-    rating: Int,
+    rating: Float,
     total_earnings: Int,
     operating_hours: String,
     contact_details: String,
