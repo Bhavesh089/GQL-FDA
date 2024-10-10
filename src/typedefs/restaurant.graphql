@@ -40,6 +40,7 @@ type RestaurantValues{
     description: String,
     id: String,
     name: String
+    image:String
 }
 
 input RestaurantUpdateInput{
@@ -55,6 +56,7 @@ input RestaurantUpdateInput{
   contact_details: String
   commission_rate: Float
   total_earnings: Float
+  image:String
 }
 
 input RestaurantInput{
@@ -69,4 +71,5 @@ input RestaurantInput{
   contact_details: String
   commission_rate: Float
   total_earnings: Float
+  image:String
 }
