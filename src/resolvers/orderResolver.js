@@ -70,7 +70,7 @@ const createOrder = async(_, {order}) => {
           console.log(result, 'this is result')
           const {statusCode, message, data} = await handleLambdaResponse(result); // Call the utility function to handle the response
           console.log( data, 'Lambda Result');
-          return {message, statusCode, data} // Return the structured response
+          return {message, statusCode, orders: data.orders} // Return the structured response
         } catch (error) {
           console.error('Error invoking Lambda:', error);
           throw new Error(error);
