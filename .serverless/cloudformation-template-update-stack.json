@@ -5,7 +5,7 @@
     "GraphqlLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/graphql-fda-dev-graphql"
+        "LogGroupName": "/aws/lambda/gql-fda-dev-graphql"
       }
     },
     "IamRoleLambdaExecution": {
@@ -33,7 +33,7 @@
               "Fn::Join": [
                 "-",
                 [
-                  "graphql-fda",
+                  "gql-fda",
                   "dev",
                   "lambda"
                 ]
@@ -51,7 +51,7 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/graphql-fda-dev*:*"
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/gql-fda-dev*:*"
                     }
                   ]
                 },
@@ -62,8 +62,19 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/graphql-fda-dev*:*:*"
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/gql-fda-dev*:*:*"
                     }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "lambda:InvokeFunction",
+                    "lambda:InvokeAsync",
+                    "s3:*"
+                  ],
+                  "Resource": [
+                    "*"
                   ]
                 }
               ]
@@ -75,7 +86,7 @@
           "Fn::Join": [
             "-",
             [
-              "graphql-fda",
+              "gql-fda",
               "dev",
               {
                 "Ref": "AWS::Region"
@@ -91,18 +102,13 @@
       "Properties": {
         "Code": {
           "S3Bucket": "serverless-framework-deployments-ap-south-1-e02e56ab-ed4f",
-          "S3Key": "serverless/graphql-fda/dev/1726936800437-2024-09-21T16:40:00.437Z/graphql-fda.zip"
+          "S3Key": "serverless/gql-fda/dev/1729246831657-2024-10-18T10:20:31.657Z/graphql.zip"
         },
-        "Handler": "dist/index.graphqlHandler",
+        "Handler": "src/handler/graphql.process",
         "Runtime": "nodejs20.x",
-        "FunctionName": "graphql-fda-dev-graphql",
+        "FunctionName": "gql-fda-dev-graphql",
         "MemorySize": 128,
-        "Timeout": 10,
-        "Environment": {
-          "Variables": {
-            "NODE_OPTIONS": "--enable-source-maps"
-          }
-        },
+        "Timeout": 6,
         "Role": {
           "Fn::GetAtt": [
             "IamRoleLambdaExecution",
@@ -114,20 +120,10 @@
         "GraphqlLogGroup"
       ]
     },
-    "GraphqlLambdaVersion9x4OCxdOkTdPVNiQAt1fKylkCuN26ANpk0ZkhhdnU": {
-      "Type": "AWS::Lambda::Version",
-      "DeletionPolicy": "Retain",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "GraphqlLambdaFunction"
-        },
-        "CodeSha256": "ATOSul68XDM9PTmIjvFO4CWxOBJldfKzGkFSD31E/EI="
-      }
-    },
     "ApiGatewayRestApi": {
       "Type": "AWS::ApiGateway::RestApi",
       "Properties": {
-        "Name": "dev-graphql-fda",
+        "Name": "dev-gql-fda",
         "EndpointConfiguration": {
           "Types": [
             "EDGE"
@@ -242,7 +238,7 @@
         "GraphqlLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1726936797922": {
+    "ApiGatewayDeployment1729246819780": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -297,16 +293,7 @@
     "ServerlessDeploymentBucketName": {
       "Value": "serverless-framework-deployments-ap-south-1-e02e56ab-ed4f",
       "Export": {
-        "Name": "sls-graphql-fda-dev-ServerlessDeploymentBucketName"
-      }
-    },
-    "GraphqlLambdaFunctionQualifiedArn": {
-      "Description": "Current Lambda function version",
-      "Value": {
-        "Ref": "GraphqlLambdaVersion9x4OCxdOkTdPVNiQAt1fKylkCuN26ANpk0ZkhhdnU"
-      },
-      "Export": {
-        "Name": "sls-graphql-fda-dev-GraphqlLambdaFunctionQualifiedArn"
+        "Name": "sls-gql-fda-dev-ServerlessDeploymentBucketName"
       }
     },
     "ServiceEndpoint": {
@@ -332,7 +319,7 @@
         ]
       },
       "Export": {
-        "Name": "sls-graphql-fda-dev-ServiceEndpoint"
+        "Name": "sls-gql-fda-dev-ServiceEndpoint"
       }
     }
   }

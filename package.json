@@ -16,10 +16,10 @@
     "graphql": "^16.9.0",
     "graphql-tools": "^9.0.1",
     "jose": "^5.9.3",
-    "loadash": "^1.0.0",
-    "serverless-offline": "^13.8.0"
+    "loadash": "^1.0.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "serverless-offline": "^13.8.0"
   }
 }

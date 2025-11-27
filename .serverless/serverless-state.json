@@ -1,17 +1,29 @@
 {
   "service": {
-    "service": "graphql-fda",
+    "service": "gql-fda",
     "serviceObject": {
-      "name": "graphql-fda"
+      "name": "gql-fda"
     },
     "provider": {
       "name": "aws",
       "runtime": "nodejs20.x",
       "region": "ap-south-1",
+      "iamRoleStatements": [
+        {
+          "Effect": "Allow",
+          "Action": [
+            "lambda:InvokeFunction",
+            "lambda:InvokeAsync",
+            "s3:*"
+          ],
+          "Resource": [
+            "*"
+          ]
+        }
+      ],
+      "versionFunctions": false,
       "memorySize": 128,
-      "timeout": 10,
       "stage": "dev",
-      "versionFunctions": true,
       "compiledCloudFormationTemplate": {
         "AWSTemplateFormatVersion": "2010-09-09",
         "Description": "The AWS CloudFormation template for this Serverless application",
@@ -19,7 +31,7 @@
           "GraphqlLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/graphql-fda-dev-graphql"
+              "LogGroupName": "/aws/lambda/gql-fda-dev-graphql"
             }
           },
           "IamRoleLambdaExecution": {
@@ -47,7 +59,7 @@
                     "Fn::Join": [
                       "-",
                       [
-                        "graphql-fda",
+                        "gql-fda",
                         "dev",
                         "lambda"
                       ]
@@ -65,7 +77,7 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/graphql-fda-dev*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/gql-fda-dev*:*"
                           }
                         ]
                       },
@@ -76,9 +88,12 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/graphql-fda-dev*:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/gql-fda-dev*:*:*"
                           }
                         ]
+                      },
+                      {
+                        "$ref": "$[\"service\"][\"provider\"][\"iamRoleStatements\"][0]"
                       }
                     ]
                   }
@@ -89,7 +104,7 @@
                 "Fn::Join": [
                   "-",
                   [
-                    "graphql-fda",
+                    "gql-fda",
                     "dev",
                     {
                       "Ref": "AWS::Region"
@@ -105,18 +120,13 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "serverless-framework-deployments-ap-south-1-e02e56ab-ed4f",
-                "S3Key": "serverless/graphql-fda/dev/1726936800437-2024-09-21T16:40:00.437Z/graphql-fda.zip"
+                "S3Key": "serverless/gql-fda/dev/1729246831657-2024-10-18T10:20:31.657Z/graphql.zip"
               },
-              "Handler": "dist/index.graphqlHandler",
+              "Handler": "src/handler/graphql.process",
               "Runtime": "nodejs20.x",
-              "FunctionName": "graphql-fda-dev-graphql",
+              "FunctionName": "gql-fda-dev-graphql",
               "MemorySize": 128,
-              "Timeout": 10,
-              "Environment": {
-                "Variables": {
-                  "NODE_OPTIONS": "--enable-source-maps"
-                }
-              },
+              "Timeout": 6,
               "Role": {
                 "Fn::GetAtt": [
                   "IamRoleLambdaExecution",
@@ -128,20 +138,10 @@
               "GraphqlLogGroup"
             ]
           },
-          "GraphqlLambdaVersion9x4OCxdOkTdPVNiQAt1fKylkCuN26ANpk0ZkhhdnU": {
-            "Type": "AWS::Lambda::Version",
-            "DeletionPolicy": "Retain",
-            "Properties": {
-              "FunctionName": {
-                "Ref": "GraphqlLambdaFunction"
-              },
-              "CodeSha256": "ATOSul68XDM9PTmIjvFO4CWxOBJldfKzGkFSD31E/EI="
-            }
-          },
           "ApiGatewayRestApi": {
             "Type": "AWS::ApiGateway::RestApi",
             "Properties": {
-              "Name": "dev-graphql-fda",
+              "Name": "dev-gql-fda",
               "EndpointConfiguration": {
                 "Types": [
                   "EDGE"
@@ -256,7 +256,7 @@
               "GraphqlLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1726936797922": {
+          "ApiGatewayDeployment1729246819780": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -311,16 +311,7 @@
           "ServerlessDeploymentBucketName": {
             "Value": "serverless-framework-deployments-ap-south-1-e02e56ab-ed4f",
             "Export": {
-              "Name": "sls-graphql-fda-dev-ServerlessDeploymentBucketName"
-            }
-          },
-          "GraphqlLambdaFunctionQualifiedArn": {
-            "Description": "Current Lambda function version",
-            "Value": {
-              "Ref": "GraphqlLambdaVersion9x4OCxdOkTdPVNiQAt1fKylkCuN26ANpk0ZkhhdnU"
-            },
-            "Export": {
-              "Name": "sls-graphql-fda-dev-GraphqlLambdaFunctionQualifiedArn"
+              "Name": "sls-gql-fda-dev-ServerlessDeploymentBucketName"
             }
           },
           "ServiceEndpoint": {
@@ -346,7 +337,7 @@
               ]
             },
             "Export": {
-              "Name": "sls-graphql-fda-dev-ServiceEndpoint"
+              "Name": "sls-gql-fda-dev-ServiceEndpoint"
             }
           }
         }
@@ -354,9 +345,9 @@
       "vpc": {}
     },
     "custom": {
-      "webpack": {
-        "webpackConfig": "./webpack.config.js",
-        "includeModules": true
+      "serverless-offline": {
+        "httpPort": 3000,
+        "lambdaPort": 3001
       }
     },
     "plugins": [
@@ -365,7 +356,7 @@
     "pluginsData": {},
     "functions": {
       "graphql": {
-        "handler": "dist/index.graphqlHandler",
+        "handler": "src/handler/graphql.process",
         "events": [
           {
             "http": {
@@ -392,53 +383,47 @@
             }
           }
         ],
-        "name": "graphql-fda-dev-graphql",
-        "environment": {
-          "NODE_OPTIONS": "--enable-source-maps"
+        "name": "gql-fda-dev-graphql",
+        "package": {
+          "artifact": "/Users/bhaveshkamuni/myprojects/fda-project/GQL-FDA/.serverless/graphql.zip"
         },
-        "package": {},
         "memory": 128,
-        "timeout": 10,
+        "timeout": 6,
         "runtime": "nodejs20.x",
-        "vpc": {},
-        "versionLogicalId": "GraphqlLambdaVersion9x4OCxdOkTdPVNiQAt1fKylkCuN26ANpk0ZkhhdnU"
+        "vpc": {}
       }
     },
     "configValidationMode": "warn",
     "serviceFilename": "serverless.yml",
     "initialServerlessConfig": {
-      "service": "graphql-fda",
+      "service": "gql-fda",
       "frameworkVersion": "4",
       "provider": {
         "$ref": "$[\"service\"][\"provider\"]"
       },
-      "plugins": {
-        "$ref": "$[\"service\"][\"plugins\"]"
-      },
-      "custom": {
-        "$ref": "$[\"service\"][\"custom\"]"
-      },
       "functions": {
         "$ref": "$[\"service\"][\"functions\"]"
       },
-      "build": {
-        "esbuild": {
-          "bundle": true,
-          "target": "node20",
-          "platform": "node",
-          "sourcemap": true
-        }
+      "plugins": {
+        "$ref": "$[\"service\"][\"plugins\"]"
+      },
+      "package": {
+        "individually": true,
+        "artifactsS3KeyDirname": "serverless/gql-fda/dev/code-artifacts",
+        "deploymentBucket": "serverless-framework-deployments-ap-south-1-e02e56ab-ed4f",
+        "artifactDirectoryName": "serverless/gql-fda/dev/1729246831657-2024-10-18T10:20:31.657Z"
+      },
+      "custom": {
+        "$ref": "$[\"service\"][\"custom\"]"
       }
     },
     "appId": null,
     "orgId": null,
-    "build": {
-      "$ref": "$[\"service\"][\"initialServerlessConfig\"][\"build\"]"
-    },
     "layers": {}
   },
   "package": {
-    "artifactDirectoryName": "serverless/graphql-fda/dev/1726936800437-2024-09-21T16:40:00.437Z",
-    "artifact": "graphql-fda.zip"
+    "individually": true,
+    "artifactDirectoryName": "serverless/gql-fda/dev/1729246831657-2024-10-18T10:20:31.657Z",
+    "artifact": ""
   }
 }

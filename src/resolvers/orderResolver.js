@@ -12,6 +12,7 @@ const getOrders = async() => {
     const result = await invokeLambda(process.env.GET_ORDERS_LAMBDA_NAME, {})
     console.log(result, 'this is result')
     const {data, message, statusCode} = await handleLambdaResponse(result); // Call the utility function to handle the response
+    data.orders.sort((a, b) => new Date(b.order_placed_at) - new Date(a.order_placed_at));
     console.log(data, message, statusCode, 'Lambda Result');
     return {message, statusCode, orders: data.orders}; // Return the structured response
 }
@@ -30,7 +31,8 @@ const getOrdersByRestaurantIds = async(_,{ids}) => {
     console.log(payload, 'this is payload')
     const result = await invokeLambda(process.env.GET_ORDERS_BY_RESTAURANTIDS_LAMBDA_NAME, payload)
     console.log(result, 'this is result')
-    const {data, message, statusCode} = await handleLambdaResponse(result); // Call the utility function to handle the response
+    const {data, message, statusCode} = await handleLambdaResponse(result) // Call the utility function to handle the response
+    data.orders.sort((a, b) => new Date(b.order_placed_at) - new Date(a.order_placed_at));
     console.log(data, message, statusCode, 'Lambda Result');
     return {message, statusCode, orders: data.orders}; // Return the structured response
 }
